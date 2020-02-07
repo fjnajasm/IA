@@ -19,7 +19,8 @@ public class AgenteEsqueleto extends Agent {
     @Override
     protected void setup() {
         try {
-            System.out.println("Hola amigos, soy " + this.getLocalName() + ". Accabo de iniciar mi ejecucion y estoy en " + this.getContainerController().getContainerName());
+            System.out.println("Hola amigos, soy " + this.getLocalName() + 
+                               ". Accabo de iniciar mi ejecucion y estoy en " + this.getContainerController().getContainerName());
         } catch (ControllerException ex) {
             Logger.getLogger(AgenteEsqueleto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -27,7 +28,12 @@ public class AgenteEsqueleto extends Agent {
 
     @Override
     protected void takeDown() {
-        System.out.println("Se termina la ejecución del agente " + this.getName());
+        try {
+            System.out.println("Adios amigos, soy " + this.getLocalName() +
+                    ". Acabo de terminar mi ejecución y estaba en " + this.getContainerController().getContainerName());
+        } catch (ControllerException ex) {
+            Logger.getLogger(AgenteEsqueleto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

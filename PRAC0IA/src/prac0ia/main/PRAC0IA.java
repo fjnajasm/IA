@@ -21,8 +21,6 @@ import prac0ia.clases.Alumno_IA;
  */
 public class PRAC0IA {
 
-    
-        
     public static void alumnosPares() throws FileNotFoundException, IOException {
         String cadena;
         FileReader f = new FileReader("datos.txt");
@@ -31,8 +29,6 @@ public class PRAC0IA {
         String nombreFicheroNuevo = "pares.txt";
         File pares = new File(nombreFicheroNuevo);
         BufferedWriter bw = new BufferedWriter(new FileWriter(pares));
-        
-        
         
         while((cadena = bf.readLine()) != null) {
             String cadenafichero = cadena;
