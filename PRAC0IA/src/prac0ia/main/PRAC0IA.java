@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import prac0ia.clases.Alumno;
 import prac0ia.clases.Alumno_IA;
+import prac0ia.utils.ConsoleUtils;
 
 /**
  *
@@ -49,17 +50,30 @@ public class PRAC0IA {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Alumno al = Alumno.crearAlumno();
-        Alumno.mostrarAlumno(al);
-
-        Alumno_IA al1 = new Alumno_IA("3", 0, al.getNombre(), al.getDNI(), al.geteMail());
-
-        al1.calcularNotaPracticas();
-
-        Alumno.mostrarAlumno(al1);
-        System.out.println("La nota de practicas es: " + al1.getNotaPrac());
         
-        alumnosPares();
+        while(true) {
+            int i = 0;
+            ConsoleUtils.println("1. Crear alumno:");
+            ConsoleUtils.println("2. Poner notas alumno:");
+            ConsoleUtils.println("3. Datos a pares:");
+            i = ConsoleUtils.getIntField("Introduzca una opción") - 1;
+            
+            
+            switch(i) {
+                case 0:
+                    Alumno al = Alumno.crearAlumno();
+                    Alumno.mostrarAlumno(al);
+                    break;
+                case 1:
+                    Alumno_IA al1 = new Alumno_IA("3", 0, "Fran", "21025923J", "fjnajasm@gmail.com");
+                    al1.calcularNotaPracticas();
+                    System.out.println("La nota de practicas es: " + al1.getNotaPrac());
+                    break;
+                case 2:
+                    alumnosPares();
+                    break;
+            }
+        }
         
     }
     
