@@ -35,6 +35,7 @@ public class PRAC0IA {
                 }
                 
                 in.close();
+                bw.close();
             }
         } catch (IOException e) {
             System.out.println("Error al leer de fichero");
