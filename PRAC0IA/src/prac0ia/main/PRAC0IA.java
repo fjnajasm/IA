@@ -7,7 +7,6 @@ package prac0ia.main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,31 +21,27 @@ import prac0ia.clases.Alumno_IA;
 public class PRAC0IA {
 
     public static void alumnosPares() throws FileNotFoundException, IOException {
-        String cadena;
-        FileReader f = new FileReader("datos.txt");
-        BufferedReader bf = new BufferedReader(f);
-        
-        String nombreFicheroNuevo = "pares.txt";
-        File pares = new File(nombreFicheroNuevo);
-        BufferedWriter bw = new BufferedWriter(new FileWriter(pares));
-        
-        while((cadena = bf.readLine()) != null) {
-            String cadenafichero = cadena;
-            int indice = cadena.indexOf(",");
-            cadena = cadena.substring(indice+2, cadena.length());
-            indice = cadena.indexOf(",");
-            cadena = cadena.substring(0,indice);
-            Integer dni = Integer.parseInt(cadena);
-            if(dni % 2 == 0 && pares.exists()) {
-                System.out.println(cadenafichero);
-                bw.write(cadenafichero + "\n");
+ 
+        try (BufferedReader in = new BufferedReader(new FileReader("datos.txt"))) {
+            String lineaFichero;
+            
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("pares.txt"))) {
+                while((lineaFichero = in.readLine()) != null) {
+                    String[] datosAlumno = lineaFichero.split(", ");
+                    int dni = Integer.parseInt(datosAlumno[1]);
+                    if(dni % 2 == 0) {
+                        bw.write(lineaFichero + "\n");
+                    }
+                }
+                
+                in.close();
             }
+        } catch (IOException e) {
+            System.out.println("Error al leer de fichero");
         }
-        
-        bw.close();
-        bf.close();
-        
     }
+    
+    
     /**
      * @param args the command line arguments
      * @throws java.io.IOException

@@ -1,5 +1,2 @@
-Andres Garcia, 1111, andres@garcia.es
-Maria Jimenez, 2222, maria@jimenez.es
-Pedro Soler, 3333, pedro@soler.es
-Lola Estepona, 4444, lola@estepona.es
-Antonio Jajas, 21025922, antono@laksdjf.com
+Fatima Amaro Martos, 2222, fatima@gmail.com
+Francis, 3333, fjnajasm@gmail.com
