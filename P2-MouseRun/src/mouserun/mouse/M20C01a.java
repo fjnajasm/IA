@@ -41,15 +41,18 @@ public class M20C01a extends Mouse {
     private Stack<Grid> pilaMovimientos;
 
     private Integer ultimoMovimiento;
+    
+    private Stack<Integer> pilaMovs;
 
     /**
      * Constructor (Puedes modificar el nombre a tu gusto).
      */
     public M20C01a() {
-        super("MXXA04");
+        super("PutisimoAmo");
         celdasVisitadas = new HashMap<>();
         pilaMovimientos = new Stack<>();
         ultimoMovimiento = 5;
+        pilaMovs = new Stack<>();
     }
 
     /**
@@ -58,12 +61,11 @@ public class M20C01a extends Mouse {
      * @param currentGrid Celda actual
      * @param cheese Queso
      */
-    @Override
-    public int move(Grid currentGrid, Cheese cheese) {
+    public Integer propio(Grid currentGrid) {
         if (!celdasVisitadas.containsKey(new Pair<>(currentGrid.getX(), currentGrid.getY()))) {
             celdasVisitadas.put(new Pair(currentGrid.getX(), currentGrid.getY()), currentGrid);
         }
-        
+
         pilaMovimientos.add(lastGrid);
 
         int movimientoFinal = Mouse.BOMB;
@@ -85,14 +87,18 @@ public class M20C01a extends Mouse {
         lastGrid = currentGrid;
 
         if (celdasPosibles.size() == 0) {
-            if(ultimoMovimiento == Mouse.UP) 
+            if (ultimoMovimiento == Mouse.UP) {
                 movimientoFinal = Mouse.DOWN;
-            if(ultimoMovimiento == Mouse.LEFT)
+            }
+            if (ultimoMovimiento == Mouse.LEFT) {
                 movimientoFinal = Mouse.RIGHT;
-            if(ultimoMovimiento == Mouse.RIGHT)
+            }
+            if (ultimoMovimiento == Mouse.RIGHT) {
                 movimientoFinal = Mouse.LEFT;
-            if(ultimoMovimiento == Mouse.DOWN)
-                 movimientoFinal = Mouse.UP;
+            }
+            if (ultimoMovimiento == Mouse.DOWN) {
+                movimientoFinal = Mouse.UP;
+            }
         } else {
             movimientoFinal = celdasPosibles.get(new Random().nextInt(celdasPosibles.size()));
         }
@@ -100,9 +106,59 @@ public class M20C01a extends Mouse {
         ultimoMovimiento = movimientoFinal;
 
         return movimientoFinal;
-
     }
 
+    @Override
+    public int move(Grid currentGrid, Cheese cheese) {
+
+        return DFS(currentGrid);
+    }
+
+    
+    public int DFS(Grid currentGrid) {
+        if (!celdasVisitadas.containsKey(new Pair<>(currentGrid.getX(), currentGrid.getY()))) {
+            celdasVisitadas.put(new Pair(currentGrid.getX(), currentGrid.getY()), currentGrid);
+            incExploredGrids();
+        }
+        
+        pilaMovimientos.add(lastGrid);
+
+        int movimientoFinal = Mouse.BOMB;
+        List<Integer> celdasPosibles = new ArrayList<>();
+
+        if (currentGrid.canGoDown() && !celdasVisitadas.containsKey(new Pair<>(currentGrid.getX(), currentGrid.getY() - 1)) && movimientoFinal == Mouse.BOMB) {
+            movimientoFinal = Mouse.DOWN;
+        }
+        if (currentGrid.canGoRight() && !celdasVisitadas.containsKey(new Pair<>(currentGrid.getX() + 1, currentGrid.getY())) && movimientoFinal == Mouse.BOMB) {
+            movimientoFinal = Mouse.RIGHT;
+        }
+        if (currentGrid.canGoUp() && !celdasVisitadas.containsKey(new Pair<>(currentGrid.getX(), currentGrid.getY() + 1)) && movimientoFinal == Mouse.BOMB) {
+            movimientoFinal = Mouse.UP;
+        }
+        if (currentGrid.canGoLeft() && !celdasVisitadas.containsKey(new Pair<>(currentGrid.getX() - 1, currentGrid.getY())) && movimientoFinal == Mouse.BOMB) {
+            movimientoFinal = Mouse.LEFT;
+        }
+
+        if(movimientoFinal != Mouse.BOMB) {
+            pilaMovs.add(movimientoFinal);
+            return movimientoFinal;
+        }
+                
+        movimientoFinal = pilaMovs.pop();
+        switch(movimientoFinal) {
+            case Mouse.LEFT:
+                return Mouse.RIGHT;
+            case Mouse.RIGHT:
+                return Mouse.LEFT;
+            case Mouse.UP:
+                return Mouse.DOWN;
+            case Mouse.DOWN:
+                return Mouse.UP;                
+        }
+        
+        return Mouse.BOMB;
+        
+    }
     /**
      * @brief Método que se llama cuando aparece un nuevo queso
      */
