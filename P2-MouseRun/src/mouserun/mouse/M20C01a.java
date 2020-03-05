@@ -5,10 +5,7 @@
  */
 package mouserun.mouse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 import java.util.Stack;
 import javafx.util.Pair;
 import mouserun.game.Mouse;
@@ -33,16 +30,16 @@ public class M20C01a extends Mouse {
      * Tabla hash para almacenar las celdas visitadas por el raton: Clave:
      * Coordenadas Valor: La celda
      */
-    private HashMap<Pair<Integer, Integer>, Grid> celdasVisitadas;
+    private final HashMap<Pair<Integer, Integer>, Grid> celdasVisitadas;
     private final HashMap< Grid , Integer > contadorCeldas;
 
     /**
      * Pila para almacenar el camino recorrido.
      */
-    private Stack<Grid> pilaMovimientos;
+    private final Stack<Grid> pilaMovimientos;
 
 
-    private Stack<Integer> pilaMovs;
+    private final Stack<Integer> pilaMovs;
 
     /**
      * Constructor (Puedes modificar el nombre a tu gusto).
@@ -103,7 +100,7 @@ public class M20C01a extends Mouse {
                 }
             }
             if (ultimo != Mouse.DOWN && currentGrid.canGoDown()) {
-                nVecesAbajo = contadorCeldas.get(new Pair(currentGrid.getX(), currentGrid.getY() - 1));;
+                nVecesAbajo = contadorCeldas.get(new Pair(currentGrid.getX(), currentGrid.getY() - 1));
                 if (nVecesAbajo < minimoVeces) {
                     minimoVeces = nVecesAbajo;
                 }
