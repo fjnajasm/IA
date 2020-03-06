@@ -31,21 +31,19 @@ public class M20C01a extends Mouse {
      * Coordenadas Valor: La celda
      */
     private final HashMap<Pair<Integer, Integer>, Grid> celdasVisitadas;
-    private final HashMap< Grid , Integer > contadorCeldas;
+    private final HashMap< Pair<Integer, Integer> , Integer > contadorCeldas;
 
     /**
      * Pila para almacenar el camino recorrido.
      */
     private final Stack<Grid> pilaMovimientos;
-
-
     private final Stack<Integer> pilaMovs;
 
     /**
      * Constructor (Puedes modificar el nombre a tu gusto).
      */
     public M20C01a() {
-        super("PutisimoAmo");
+        super("M20C01a");
         celdasVisitadas = new HashMap<>();
         pilaMovimientos = new Stack<>();
         pilaMovs = new Stack<>();
@@ -61,15 +59,16 @@ public class M20C01a extends Mouse {
 
     public int DFS(Grid currentGrid) {
         Pair pair = new Pair(currentGrid.getX(), currentGrid.getY());
-        if (!celdasVisitadas.containsKey(new Pair<>(currentGrid.getX(), currentGrid.getY()))) {
+        if (!celdasVisitadas.containsKey(pair)) {
             celdasVisitadas.put(pair, currentGrid);
             incExploredGrids();
-            contadorCeldas.put(currentGrid, 1);
+            contadorCeldas.put(pair, 0);
         }
         
-        contadorCeldas.replace(currentGrid, contadorCeldas.get(currentGrid), contadorCeldas.get(currentGrid) + 1);
+        contadorCeldas.replace(pair, contadorCeldas.get(pair), contadorCeldas.get(pair) + 1);
 
-        pilaMovimientos.add(lastGrid);
+        System.out.println("Casilla: X - " + currentGrid.getX() + " / Y - " + currentGrid.getY() + " --> " + contadorCeldas.get(pair));
+        //pilaMovimientos.add(lastGrid);
 
         int movimientoFinal = Mouse.BOMB;
 
@@ -92,26 +91,26 @@ public class M20C01a extends Mouse {
         }
         if (pilaMovs.empty()) {
             int minimoVeces = Integer.MAX_VALUE;
-            int nVecesArriba = Integer.MAX_VALUE, nVecesAbajo = Integer.MAX_VALUE, nVecesIzquierda = Integer.MAX_VALUE, nVecesDerecha;
-            if (ultimo != Mouse.UP && currentGrid.canGoUp()) {
-                nVecesArriba = contadorCeldas.get(currentGrid);
+            int nVecesArriba = Integer.MAX_VALUE, nVecesAbajo = Integer.MAX_VALUE, nVecesIzquierda = Integer.MAX_VALUE, nVecesDerecha = Integer.MAX_VALUE;
+            if (currentGrid.canGoUp()) {
+                nVecesArriba = contadorCeldas.get(new Pair<>(currentGrid.getX(), currentGrid.getY() + 1));
                 if (nVecesArriba < minimoVeces) {
                     minimoVeces = nVecesArriba;
                 }
             }
-            if (ultimo != Mouse.DOWN && currentGrid.canGoDown()) {
+            if (currentGrid.canGoDown()) {
                 nVecesAbajo = contadorCeldas.get(new Pair(currentGrid.getX(), currentGrid.getY() - 1));
                 if (nVecesAbajo < minimoVeces) {
                     minimoVeces = nVecesAbajo;
                 }
             }
-            if (ultimo != Mouse.LEFT && currentGrid.canGoLeft()) {
+            if (currentGrid.canGoLeft()) {
                 nVecesIzquierda = contadorCeldas.get(new Pair(currentGrid.getX() - 1, currentGrid.getY()));
                 if (nVecesIzquierda < minimoVeces) {
                     minimoVeces = nVecesIzquierda;
                 }
             }
-            if (ultimo != Mouse.RIGHT && currentGrid.canGoRight()) {
+            if (currentGrid.canGoRight()) {
                 nVecesDerecha = contadorCeldas.get(new Pair(currentGrid.getX() + 1, currentGrid.getY()));
                 if (nVecesDerecha < minimoVeces) {
                     minimoVeces = nVecesDerecha;
@@ -120,19 +119,19 @@ public class M20C01a extends Mouse {
 
             if (minimoVeces == nVecesArriba) {
                 ultimo = DOWN;
-                pilaMovs.add(ultimo);
+                //pilaMovs.add(ultimo);
                 return UP;
             } else if (minimoVeces == nVecesAbajo) {
                 ultimo = UP;
-                pilaMovs.add(ultimo);
+                //pilaMovs.add(ultimo);
                 return DOWN;
             } else if (minimoVeces == nVecesIzquierda) {
                 ultimo = RIGHT;
-                pilaMovs.add(ultimo);
+                //pilaMovs.add(ultimo);
                 return LEFT;
             } else {
                 ultimo = LEFT;
-                pilaMovs.add(ultimo);
+                //pilaMovs.add(ultimo);
                 return RIGHT;
             }
         }
@@ -161,6 +160,11 @@ public class M20C01a extends Mouse {
         return ultimo;
     }
 
+    
+    public Stack<Integer> busqueda(Grid currentGrid, Grid objetivo) {
+        
+        return null;
+    }
     /**
      * @brief Método que se llama cuando aparece un nuevo queso
      */
